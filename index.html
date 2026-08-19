@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control - Auto Lavado</title>
+    <style>
+        :root {
+            --primary: #1a56db;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f1f5f9; color: var(--dark); padding: 20px; }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: white; 
+            padding: 15px 25px; 
+            border-radius: 8px; 
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .logo-placeholder {
+            max-height: 50px;
+            max-width: 180px;
+        }
+
+        nav button {
+            padding: 8px 16px;
+            margin-left: 5px;
+            border: 1px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        nav button.active, nav button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-content.active { display: block; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #475569; }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid var(--border); padding: 10px; text-align: left; font-size: 14px; }
+        th { background-color: #f8fafc; font-weight: 600; }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-success { background: #16a34a; }
+        .btn-danger { background: #dc2626; }
+
+        /* Estilos de la Orden Imprimible */
+        #printable-order { display: none; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printable-order, #printable-order * { visibility: visible; }
+            #printable-order {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background: white;
+            }
+            .no-print { display: none !important; }
+        }
+
+        .print-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .totals-table { width: 300px; margin-left: auto; margin-top: 15px; }
+        .totals-table td { text-align: right; }
+    </style>
+</head>
+<body>
+
+<div class="container no-print">
+    <header>
+        <!-- RUTA PARA TU LOGO PRINCIPAL -->
+        <img src="logo.png" alt="Logo Auto Lavado" class="logo-placeholder" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <h2 style="display:none;">AUTO LAVADO</h2>
+
+        <nav>
+            <button class="active" onclick="switchTab('ordenes')">Órdenes de Trabajo</button>
+            <button onclick="switchTab('gastos')">Control de Gastos</button>
+        </nav>
+    </header>
+
+    <!-- PESTAÑA 1: ÓRDENES DE TRABAJO -->
+    <div id="tab-ordenes" class="tab-content active">
+        <h3>Nueva Orden de Lavado</h3>
+        <br>
+        <form id="form-orden" onsubmit="guardarOrden(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Unidad / Vehículo</label>
+                    <input type="text" id="equipo" placeholder="Ej: TRACTOR ALA-20063 / Sedán" required>
+                </div>
+                <div class="form-group">
+                    <label>U. Operativa / Cliente</label>
+                    <input type="text" id="u-operativa" placeholder="Ej: FULLES PFH / Cliente Local" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Servicio</label>
+                    <select id="tipo-servicio" required>
+                        <option value="Lavado General">Lavado General</option>
+                        <option value="Lavado y Engrase">Lavado y Engrase</option>
+                        <option value="Lavado de Chasis y Motor">Lavado de Chasis y Motor</option>
+                        <option value="Estética / Encerado">Estética / Encerado</option>
+                        <option value="Sanitizado de Cabina">Sanitizado de Cabina</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio Servicio ($)</label>
+                    <input type="number" id="precio-servicio" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Tasa IVA (%)</label>
+                    <input type="number" id="tasa-iva" value="16" step="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Atendido por (Usuario)</label>
+                    <input type="text" id="usuario" placeholder="Ej: LROMERO-HMO" required>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Observaciones / Detalles de la Unidad</label>
+                <textarea id="comentarios" rows="2" placeholder="Notas sobre el estado del vehículo o peticiones especiales..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">Generar Orden</button>
+        </form>
+
+        <hr style="margin: 20px 0;">
+
+        <h3>Monitoreo de Órdenes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>IdOR</th>
+                    <th>Equipo</th>
+                    <th>U. Operativa</th>
+                    <th>Servicio</th>
+                    <th>Fecha</th>
+                    <th>Status</th>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-ordenes"></tbody>
+        </table>
+    </div>
+
+    <!-- PESTAÑA 2: CONTROL DE GASTOS -->
+    <div id="tab-gastos" class="tab-content">
+        <h3>Registro de Gastos</h3>
+        <br>
+        <form id="form-gasto" onsubmit="guardarGasto(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Concepto / Insumo</label>
+                    <input type="text" id="gasto-concepto" placeholder="Ej: Jabón, Shampú, Desengrasante" required>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="gasto-categoria">
+                        <option value="Químicos e Insumos">Químicos e Insumos</option>
+                        <option value="Mantenimiento Equipos">Mantenimiento Equipos</option>
+                        <option value="Servicios Básicos">Servicios (Agua/Luz)</option>
+                        <option value="Nomina / Personal">Nómina / Personal</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Monto ($)</label>
+                    <input type="number" id="gasto-monto" step="0.01" required>
+                </div>
+            </div>
+            <button type="submit" class="btn">Registrar Gasto</button>
+        </form>
+
+        <hr style="margin: 20px 0;">
+
+        <h3>Historial de Gastos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Concepto</th>
+                    <th>Categoría</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-gastos"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ORDEN DE TRABAJO IMPRIMIBLE -->
+<div id="printable-order">
+    <div class="print-header">
+        <div>
+            <!-- RUTA PARA TU LOGO EN IMPRESIÓN -->
+            <img src="logo-print.png" alt="Logo" style="max-height: 60px;" onerror="this.style.display='none'">
+            <h2>AUTO LAVADO PROFESIONAL</h2>
+            <p>Comprobante de Servicio / Orden de Trabajo</p>
+        </div>
+        <div style="text-align: right;">
+            <h3 id="p-idor">ORDEN #000000</h3>
+            <p id="p-fecha">Fecha: --/--/----</p>
+            <p id="p-status">Status: FINALIZADA</p>
+        </div>
+    </div>
+
+    <table style="margin-bottom: 20px;">
+        <tr>
+            <td><strong>Unidad / Equipo:</strong> <span id="p-equipo"></span></td>
+            <td><strong>U. Operativa / Cliente:</strong> <span id="p-uoperativa"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Atendido por:</strong> <span id="p-usuario"></span></td>
+            <td><strong>Razon/Servicio:</strong> <span id="p-servicio"></span></td>
+        </tr>
+    </table>
+
+    <p><strong>Observaciones:</strong> <span id="p-comentarios"></span></p>
+
+    <h4 style="margin-top: 20px;">Desglose de Cobro</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción del Servicio</th>
+                <th style="text-align: right;">Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="p-concepto-tabla">Lavado de unidad</td>
+                <td style="text-align: right;" id="p-subtotal-item">$0.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="totals-table">
+        <tr>
+            <td><strong>Subtotal (Sin IVA):</strong></td>
+            <td id="p-subtotal">$0.00</td>
+        </tr>
+        <tr>
+            <td><strong id="p-tasa-lbl">IVA (16%):</strong></td>
+            <td id="p-iva">$0.00</td>
+        </tr>
+        <tr>
+            <td><strong>Total (Con IVA):</strong></td>
+            <td id="p-total" style="font-size: 16px; font-weight: bold;">$0.00</td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 50px; text-align: center; font-size: 12px;">
+        <p>_____________________________________</p>
+        <p>Firma de Conformidad del Cliente</p>
+        <p style="margin-top: 15px;">¡Gracias por su preferencia!</p>
+    </div>
+</div>
+
+<script>
+    let ordenes = JSON.parse(localStorage.getItem('al_ordenes')) || [];
+    let gastos = JSON.parse(localStorage.getItem('al_gastos')) || [];
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function guardarOrden(e) {
+        e.preventDefault();
+        const idOR = Math.floor(100000 + Math.random() * 900000);
+        const hoy = new Date().toLocaleDateString('es-MX');
+
+        const nuevaOrden = {
+            idOR,
+            equipo: document.getElementById('equipo').value,
+            uOperativa: document.getElementById('u-operativa').value,
+            servicio: document.getElementById('tipo-servicio').value,
+            precio: parseFloat(document.getElementById('precio-servicio').value),
+            tasaIva: parseFloat(document.getElementById('tasa-iva').value),
+            usuario: document.getElementById('usuario').value,
+            comentarios: document.getElementById('comentarios').value,
+            fecha: hoy,
+            status: 'ELABORADA'
+        };
+
+        ordenes.push(nuevaOrden);
+        localStorage.setItem('al_ordenes', JSON.stringify(ordenes));
+        document.getElementById('form-orden').reset();
+        renderOrdenes();
+    }
+
+    function renderOrdenes() {
+        const tbody = document.getElementById('tabla-ordenes');
+        tbody.innerHTML = '';
+        ordenes.forEach((o, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${o.idOR}</strong></td>
+                    <td>${o.equipo}</td>
+                    <td>${o.uOperativa}</td>
+                    <td>${o.servicio}</td>
+                    <td>${o.fecha}</td>
+                    <td><span style="color: ${o.status === 'FINALIZADA' ? 'green' : 'orange'}">${o.status}</span></td>
+                    <td>${o.usuario}</td>
+                    <td>
+                        ${o.status === 'ELABORADA' ? `<button class="btn btn-success" style="padding: 2px 6px; font-size: 12px;" onclick="cerrarOrden(${index})">Cerrar</button>` : ''}
+                        <button class="btn" style="padding: 2px 6px; font-size: 12px;" onclick="imprimirOrden(${index})">Imprimir</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function cerrarOrden(index) {
+        ordenes[index].status = 'FINALIZADA';
+        localStorage.setItem('al_ordenes', JSON.stringify(ordenes));
+        renderOrdenes();
+    }
+
+    function imprimirOrden(index) {
+        const o = ordenes[index];
+        const subtotal = o.precio;
+        const iva = subtotal * (o.tasaIva / 100);
+        const total = subtotal + iva;
+
+        document.getElementById('p-idor').innerText = `ORDEN #${o.idOR}`;
+        document.getElementById('p-fecha').innerText = `Fecha: ${o.fecha}`;
+        document.getElementById('p-status').innerText = `Status: ${o.status}`;
+        document.getElementById('p-equipo').innerText = o.equipo;
+        document.getElementById('p-uoperativa').innerText = o.uOperativa;
+        document.getElementById('p-usuario').innerText = o.usuario;
+        document.getElementById('p-servicio').innerText = o.servicio;
+        document.getElementById('p-comentarios').innerText = o.comentarios || 'Sin observaciones';
+
+        document.getElementById('p-concepto-tabla').innerText = o.servicio;
+        document.getElementById('p-subtotal-item').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('p-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('p-tasa-lbl').innerText = `IVA (${o.tasaIva}%):`;
+        document.getElementById('p-iva').innerText = `$${iva.toFixed(2)}`;
+        document.getElementById('p-total').innerText = `$${total.toFixed(2)}`;
+
+        window.print();
+    }
+
+    function guardarGasto(e) {
+        e.preventDefault();
+        const hoy = new Date().toLocaleDateString('es-MX');
+        const nuevoGasto = {
+            fecha: hoy,
+            concepto: document.getElementById('gasto-concepto').value,
+            categoria: document.getElementById('gasto-categoria').value,
+            monto: parseFloat(document.getElementById('gasto-monto').value)
+        };
+
+        gastos.push(nuevoGasto);
+        localStorage.setItem('al_gastos', JSON.stringify(gastos));
+        document.getElementById('form-gasto').reset();
+        renderGastos();
+    }
+
+    function renderGastos() {
+        const tbody = document.getElementById('tabla-gastos');
+        tbody.innerHTML = '';
+        gastos.forEach(g => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${g.fecha}</td>
+                    <td>${g.concepto}</td>
+                    <td>${g.categoria}</td>
+                    <td>$${g.monto.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+    }
+
+    // Carga inicial
+    renderOrdenes();
+    renderGastos();
+</script>
+
+</body>
+</html>
