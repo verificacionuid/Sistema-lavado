@@ -19,7 +19,6 @@
 
         .main-wrapper { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; }
 
-        /* HEADER CON LOGO Y NAVEGACION ERP */
         header {
             display: flex;
             align-items: center;
@@ -42,7 +41,6 @@
             object-fit: contain;
         }
 
-        /* GRID DE BOTONES ESTILO ERP */
         .erp-nav {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -70,16 +68,9 @@
             user-select: none;
         }
 
-        .erp-btn:hover {
-            background: linear-gradient(to bottom, #fde047, #b45309);
-        }
+        .erp-btn:hover { background: linear-gradient(to bottom, #fde047, #b45309); }
+        .erp-btn.active { background: linear-gradient(to bottom, #b45309, #78350f); box-shadow: inset 0 2px 4px rgba(0,0,0,0.4); }
 
-        .erp-btn.active {
-            background: linear-gradient(to bottom, #b45309, #78350f);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-        }
-
-        /* CONTENIDO PRINCIPAL */
         .content-area {
             border: 1px solid #cbd5e1;
             padding: 15px;
@@ -91,38 +82,14 @@
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
 
-        /* VISTA PRINCIPAL */
-        .home-banner-container {
-            text-align: center;
-        }
+        .home-banner-container { text-align: center; }
+        .home-banner { width: 100%; max-height: 380px; object-fit: cover; border: 1px solid #94a3b8; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 
-        .home-banner {
-            width: 100%;
-            max-height: 380px;
-            object-fit: cover;
-            border: 1px solid #94a3b8;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #d97706;
-            padding: 12px;
-            border-radius: 4px;
-        }
-
+        .dashboard-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #d97706; padding: 12px; border-radius: 4px; }
         .card h4 { font-size: 12px; color: #64748b; text-transform: uppercase; margin-bottom: 5px; }
         .card .val { font-size: 20px; font-weight: bold; color: #1e293b; }
 
-        /* FORMULARIOS Y TABLAS */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -146,56 +113,41 @@
         .btn-action:hover { background: #334155; }
         .btn-success { background: #15803d; }
         .btn-success:hover { background: #166534; }
+        .btn-danger { background: #b91c1c; }
+        .btn-danger:hover { background: #991b1b; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .filter-bar { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 10px; }
+        .filter-btn { padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer; border: 1px solid #cbd5e1; background: #f1f5f9; }
+        .filter-btn.active { background: #1e293b; color: white; border-color: #1e293b; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 12px; }
         th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
         th { background-color: #f1f5f9; font-weight: bold; color: #1e293b; }
         tr:nth-child(even) { background-color: #f8fafc; }
 
-        /* FOOTER ESTILO ERP */
-        footer {
-            margin-top: auto;
-        }
-
-        .status-bar {
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 6px 12px;
-            font-size: 11px;
-            color: #64748b;
-            margin-bottom: 10px;
-        }
-
-        .footer-links {
-            text-align: center;
-            font-size: 12px;
-        }
-
+        footer { margin-top: auto; }
+        .status-bar { background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 12px; font-size: 11px; color: #64748b; margin-bottom: 10px; }
+        .footer-links { text-align: center; font-size: 12px; }
         .footer-links a { color: #0284c7; text-decoration: none; margin: 0 8px; }
-        .footer-links a:hover { text-decoration: underline; }
         .copyright { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 5px; }
 
-        /* FORMATO IMPRESION TICKET */
-        #print-ticket { display: none; }
+        /* AREAS DE IMPRESION */
+        #print-order, #print-corte-gastos { display: none; }
 
         @media print {
             body * { visibility: hidden; }
-            #print-ticket, #print-ticket * { visibility: visible; }
-            #print-ticket {
-                display: block !important;
-                position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white;
-            }
+            .printable, .printable * { visibility: visible; }
+            .printable { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white; }
         }
 
-        .ticket-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; }
-        .ticket-totals { width: 280px; margin-left: auto; margin-top: 15px; }
-        .ticket-totals td { text-align: right; }
+        .print-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .print-totals { width: 280px; margin-left: auto; margin-top: 15px; }
+        .print-totals td { text-align: right; }
     </style>
 </head>
 <body>
 
 <div class="main-wrapper">
-    <!-- BARRA SUPERIOR CON LOGO Y NAVEGACION ERP -->
     <header>
         <div class="logo-container">
             <img src="logo.png" alt="Logo Auto Lavado" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
@@ -213,10 +165,9 @@
         </nav>
     </header>
 
-    <!-- AREA DE CONTENIDO GENERAL -->
     <div class="content-area">
 
-        <!-- PESTAÑA: INICIO -->
+        <!-- INICIO -->
         <div id="tab-inicio" class="tab-pane active">
             <div class="home-banner-container">
                 <img src="banner.jpg" class="home-banner" alt="Auto Lavado" onerror="this.src='https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1200&q=80'">
@@ -242,7 +193,7 @@
             </div>
         </div>
 
-        <!-- PESTAÑA: ÓRDENES DE TRABAJO -->
+        <!-- ÓRDENES DE TRABAJO -->
         <div id="tab-ordenes" class="tab-pane">
             <h3 style="margin-bottom: 10px;">Generar Nueva Orden de Trabajo</h3>
             <form id="form-orden" onsubmit="guardarOrden(event)">
@@ -290,7 +241,15 @@
                 <button type="submit" class="btn-action btn-success">Guardar e Iniciar Lavado</button>
             </form>
 
-            <h3 style="margin-top: 20px; margin-bottom: 10px;">Monitor de Órdenes de Lavado</h3>
+            <h3 style="margin-top: 20px;">Consulta y Monitor de Órdenes</h3>
+            
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filtrarOrdenes('TODAS', this)">Todas</button>
+                <button class="filter-btn" onclick="filtrarOrdenes('ELABORADA', this)">En Proceso</button>
+                <button class="filter-btn" onclick="filtrarOrdenes('FINALIZADA', this)">Terminadas</button>
+                <button class="filter-btn" onclick="filtrarOrdenes('CANCELADA', this)">Canceladas</button>
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -308,7 +267,7 @@
             </table>
         </div>
 
-        <!-- PESTAÑA: CONTROL DE GASTOS -->
+        <!-- CONTROL DE GASTOS -->
         <div id="tab-gastos" class="tab-pane">
             <h3 style="margin-bottom: 10px;">Registro de Gastos Operativos</h3>
             <form id="form-gasto" onsubmit="guardarGasto(event)">
@@ -335,8 +294,18 @@
                 <button type="submit" class="btn-action">Registrar Gasto</button>
             </form>
 
-            <h3 style="margin-top: 20px; margin-bottom: 10px;">Historial de Gastos</h3>
-            <table>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #cbd5e1;">
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Corte Diario de Gastos</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <label style="font-size: 12px; font-weight: bold;">Fecha del Corte:</label>
+                    <input type="date" id="corte-fecha-input" style="padding: 4px; font-size: 12px;">
+                    <button class="btn-action btn-success" onclick="imprimirCorteGastos()">Imprimir Corte Diario</button>
+                </div>
+            </div>
+
+            <table style="margin-top: 15px;">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -349,10 +318,10 @@
             </table>
         </div>
 
-        <!-- PESTAÑA: PRECIOS Y TARIFAS -->
+        <!-- TARIFAS -->
         <div id="tab-tarifas" class="tab-pane">
             <h3 style="margin-bottom: 10px;">Configuración de Tarifas Regionales</h3>
-            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Ajusta los precios base predeterminados que sugerirá el sistema al crear órdenes de trabajo.</p>
+            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Ajusta los precios base predeterminados.</p>
             <div class="form-grid">
                 <div class="form-group">
                     <label>Lavado General ($)</label>
@@ -374,7 +343,6 @@
             <button type="button" class="btn-action btn-success" onclick="guardarTarifas()">Guardar Tarifas Base</button>
         </div>
 
-        <!-- PESTAÑAS SECUNDARIAS -->
         <div id="tab-catalogos" class="tab-pane">
             <h3>Catálogo de Clientes y Equipos</h3>
             <p style="font-size: 12px; margin-top: 10px;">Módulo para alta de vehículos y clientes recurrentes.</p>
@@ -384,14 +352,22 @@
             <p style="font-size: 12px; margin-top: 10px;">Resumen semanal de lavado de unidades, acumulados de IVA e ingresos.</p>
         </div>
 
-        <!-- PESTAÑA: CONFIGURACIÓN -->
+        <!-- CONFIGURACIÓN -->
         <div id="tab-configuracion" class="tab-pane">
-            <h3 style="margin-bottom: 10px;">Configuración del Sistema</h3>
-            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Ajusta la información de la terminal que se muestra en la barra inferior.</p>
+            <h3 style="margin-bottom: 10px;">Configuración del Nombre e Impresión</h3>
+            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Ajusta el nombre de tu empresa para que aparezca en las Órdenes de Trabajo impresas.</p>
             <div class="form-grid">
                 <div class="form-group">
+                    <label>Nombre Comercial / Negocio</label>
+                    <input type="text" id="cfg-nombre-negocio" placeholder="Ej: AUTO LAVADO EXPRESS">
+                </div>
+                <div class="form-group">
+                    <label>Dirección / Teléfono (Leyenda)</label>
+                    <input type="text" id="cfg-leyenda" placeholder="Ej: Av. Principal #123 - Tel: 555-0192">
+                </div>
+                <div class="form-group">
                     <label>Ubicación / Terminal</label>
-                    <input type="text" id="cfg-terminal" placeholder="Ej: SUCURSAL MATRIZ">
+                    <input type="text" id="cfg-terminal" placeholder="Ej: SUCURSAL CENTRO">
                 </div>
                 <div class="form-group">
                     <label>Estado del Sistema</label>
@@ -407,7 +383,6 @@
 
     </div>
 
-    <!-- PIE DE PAGINA ERP -->
     <footer>
         <div class="status-bar" id="barra-estado">
             Terminal: SUCURSAL CENTRO | Estado: CONECTADO | Usuario: OPERADOR
@@ -422,13 +397,13 @@
     </footer>
 </div>
 
-<!-- FORMATO DE IMPRESIÓN / TICKET DE ORDEN -->
-<div id="print-ticket">
-    <div class="ticket-header">
+<!-- DOCUMENTO IMPRESO: ORDEN DE TRABAJO -->
+<div id="print-order">
+    <div class="print-header">
         <div>
-            <img src="logo-print.png" alt="Logo Impresión" style="max-height: 55px;" onerror="this.style.display='none'">
-            <h2 style="margin-top: 5px;">AUTO LAVADO PROFESIONAL</h2>
-            <p style="font-size: 12px;">Comprobante de Servicio y Orden de Trabajo</p>
+            <img src="logo-print.png" alt="Logo Impresión" style="max-height: 60px;" onerror="this.style.display='none'">
+            <h2 id="p-nombre-negocio" style="margin-top: 5px;">AUTO LAVADO PROFESIONAL</h2>
+            <p id="p-leyenda-negocio" style="font-size: 11px;">Comprobante de Servicio y Orden de Trabajo</p>
         </div>
         <div style="text-align: right;">
             <h3 id="p-idor">ORDEN #000000</h3>
@@ -466,7 +441,7 @@
         </tbody>
     </table>
 
-    <table class="ticket-totals">
+    <table class="print-totals">
         <tr>
             <td>Subtotal (Sin IVA):</td>
             <td id="p-subtotal">$0.00</td>
@@ -493,28 +468,62 @@
     </div>
 </div>
 
+<!-- DOCUMENTO IMPRESO: CORTE DIARIO DE GASTOS -->
+<div id="print-corte-gastos">
+    <div class="print-header">
+        <div>
+            <img src="logo-print.png" alt="Logo Impresión" style="max-height: 60px;" onerror="this.style.display='none'">
+            <h2 id="p-gasto-negocio">AUTO LAVADO PROFESIONAL</h2>
+            <p style="font-size: 12px;">Corte Diario de Control de Gastos</p>
+        </div>
+        <div style="text-align: right;">
+            <h3>REPORTE DE GASTOS</h3>
+            <p id="p-gasto-fecha" style="font-size: 12px;">Fecha: --/--/----</p>
+        </div>
+    </div>
+
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Concepto del Gasto</th>
+                <th>Categoría</th>
+                <th style="text-align: right;">Monto</th>
+            </tr>
+        </thead>
+        <tbody id="p-gasto-tabla"></tbody>
+    </table>
+
+    <table class="print-totals">
+        <tr>
+            <td><strong>TOTAL GASTOS DEL DÍA:</strong></td>
+            <td id="p-gasto-total" style="font-size: 15px; font-weight: bold;">$0.00</td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 60px; text-align: center; font-size: 11px;">
+        <p>___________________________________</p>
+        <p>Firma de Conformidad / Administración</p>
+    </div>
+</div>
+
 <script>
-    // ALMACENAMIENTO LOCAL DE DATOS
     let ordenes = JSON.parse(localStorage.getItem('al_ordenes_db')) || [];
     let gastos = JSON.parse(localStorage.getItem('al_gastos_db')) || [];
-    let tarifas = JSON.parse(localStorage.getItem('al_tarifas_db')) || {
-        general: 350.00,
-        engrase: 500.00,
-        chasis: 650.00,
-        estetica: 800.00
-    };
+    let tarifas = JSON.parse(localStorage.getItem('al_tarifas_db')) || { general: 350.00, engrase: 500.00, chasis: 650.00, estetica: 800.00 };
     let config = JSON.parse(localStorage.getItem('al_config_db')) || {
+        nombreNegocio: 'AUTO LAVADO PROFESIONAL',
+        leyenda: 'Comprobante de Servicio y Orden de Trabajo',
         terminal: 'SUCURSAL CENTRO',
         estado: 'CONECTADO',
         usuario: 'OPERADOR'
     };
 
-    // GENERAR ID AUTOMATICO
+    let filtroActual = 'TODAS';
+
     function nuevoID() {
         return Math.floor(900000 + Math.random() * 90000);
     }
 
-    // NAVEGACION ERP
     function openTab(tabId, element) {
         document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.erp-btn').forEach(btn => btn.classList.remove('active'));
@@ -523,7 +532,6 @@
         if(element) element.classList.add('active');
     }
 
-    // PRECIOS DINAMICOS
     function actualizarPrecioSugerido() {
         const serv = document.getElementById('or-servicio').value;
         const inputPrecio = document.getElementById('or-precio');
@@ -544,8 +552,9 @@
         alert('Tarifas actualizadas correctamente.');
     }
 
-    // CONFIGURACION TERMINAL
     function guardarConfiguracion() {
+        config.nombreNegocio = document.getElementById('cfg-nombre-negocio').value.toUpperCase();
+        config.leyenda = document.getElementById('cfg-leyenda').value;
         config.terminal = document.getElementById('cfg-terminal').value.toUpperCase();
         config.estado = document.getElementById('cfg-estado').value.toUpperCase();
         config.usuario = document.getElementById('cfg-usuario').value.toUpperCase();
@@ -559,7 +568,6 @@
         document.getElementById('barra-estado').innerText = `Terminal: ${config.terminal} | Estado: ${config.estado} | Usuario: ${config.usuario}`;
     }
 
-    // GUARDAR ORDEN DE TRABAJO
     function guardarOrden(e) {
         e.preventDefault();
         const hoy = new Date().toLocaleDateString('es-MX');
@@ -587,24 +595,44 @@
         actualizarDashboard();
     }
 
-    // RENDERIZAR TABLA DE ORDENES
+    function filtrarOrdenes(status, btn) {
+        filtroActual = status;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        renderOrdenes();
+    }
+
     function renderOrdenes() {
         const tbody = document.getElementById('tabla-ordenes');
         tbody.innerHTML = '';
 
-        ordenes.forEach((o, index) => {
+        let filtradas = ordenes;
+        if(filtroActual !== 'TODAS') {
+            filtradas = ordenes.filter(o => o.status === filtroActual);
+        }
+
+        filtradas.forEach((o) => {
+            const indexOriginal = ordenes.findIndex(item => item.idOR === o.idOR);
+            
+            let colorStatus = 'orange';
+            if(o.status === 'FINALIZADA') colorStatus = 'green';
+            if(o.status === 'CANCELADA') colorStatus = 'red';
+
             tbody.innerHTML += `
                 <tr>
                     <td><strong>${o.idOR}</strong></td>
                     <td>${o.equipo}</td>
                     <td>${o.cliente}</td>
                     <td>${o.servicio}</td>
-                    <td><span style="color: ${o.status === 'FINALIZADA' ? 'green' : 'orange'}; font-weight: bold;">${o.status}</span></td>
+                    <td><span style="color: ${colorStatus}; font-weight: bold;">${o.status}</span></td>
                     <td>${o.fecha}</td>
                     <td>${o.usuario}</td>
                     <td>
-                        ${o.status === 'ELABORADA' ? `<button class="btn-action btn-success" style="padding: 2px 6px;" onclick="cerrarOrden(${index})">Cerrar</button>` : ''}
-                        <button class="btn-action" style="padding: 2px 6px;" onclick="imprimirOrden(${index})">Ticket</button>
+                        ${o.status === 'ELABORADA' ? `
+                            <button class="btn-action btn-success" style="padding: 2px 6px;" onclick="cerrarOrden(${indexOriginal})">Cerrar</button>
+                            <button class="btn-action btn-danger" style="padding: 2px 6px;" onclick="cancelarOrden(${indexOriginal})">Cancelar</button>
+                        ` : ''}
+                        <button class="btn-action" style="padding: 2px 6px;" onclick="imprimirOrden(${indexOriginal})">Orden Trabajo</button>
                     </td>
                 </tr>
             `;
@@ -618,12 +646,23 @@
         actualizarDashboard();
     }
 
-    // PREPARAR IMPRESION DE TICKET
+    function cancelarOrden(index) {
+        if(confirm('¿Está seguro de cancelar esta orden de trabajo?')) {
+            ordenes[index].status = 'CANCELADA';
+            localStorage.setItem('al_ordenes_db', JSON.stringify(ordenes));
+            renderOrdenes();
+            actualizarDashboard();
+        }
+    }
+
     function imprimirOrden(index) {
         const o = ordenes[index];
         const subtotal = o.precio;
         const iva = subtotal * (o.ivaTasa / 100);
         const total = subtotal + iva;
+
+        document.getElementById('p-nombre-negocio').innerText = config.nombreNegocio || 'AUTO LAVADO PROFESIONAL';
+        document.getElementById('p-leyenda-negocio').innerText = config.leyenda || 'Comprobante de Servicio y Orden de Trabajo';
 
         document.getElementById('p-idor').innerText = `ORDEN #${o.idOR}`;
         document.getElementById('p-fecha').innerText = `Fecha: ${o.fecha}`;
@@ -641,10 +680,12 @@
         document.getElementById('p-iva').innerText = `$${iva.toFixed(2)}`;
         document.getElementById('p-total').innerText = `$${total.toFixed(2)}`;
 
+        document.getElementById('print-corte-gastos').classList.remove('printable');
+        document.getElementById('print-order').classList.add('printable');
+
         window.print();
     }
 
-    // GASTOS
     function guardarGasto(e) {
         e.preventDefault();
         const hoy = new Date().toLocaleDateString('es-MX');
@@ -679,11 +720,52 @@
         });
     }
 
-    // DASHBOARD
+    function imprimirCorteGastos() {
+        const fechaInput = document.getElementById('corte-fecha-input').value;
+        let fechaBusqueda = new Date().toLocaleDateString('es-MX');
+
+        if(fechaInput) {
+            const partes = fechaInput.split('-');
+            fechaBusqueda = `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
+        const gastosFiltrados = gastos.filter(g => g.fecha === fechaBusqueda);
+
+        if(gastosFiltrados.length === 0) {
+            alert(`No hay gastos registrados en la fecha ${fechaBusqueda}`);
+            return;
+        }
+
+        document.getElementById('p-gasto-negocio').innerText = config.nombreNegocio || 'AUTO LAVADO PROFESIONAL';
+        document.getElementById('p-gasto-fecha').innerText = `Fecha: ${fechaBusqueda}`;
+
+        const tbody = document.getElementById('p-gasto-tabla');
+        tbody.innerHTML = '';
+        let suma = 0;
+
+        gastosFiltrados.forEach(g => {
+            suma += g.monto;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${g.concepto}</td>
+                    <td>${g.categoria}</td>
+                    <td style="text-align: right;">$${g.monto.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('p-gasto-total').innerText = `$${suma.toFixed(2)}`;
+
+        document.getElementById('print-order').classList.remove('printable');
+        document.getElementById('print-corte-gastos').classList.add('printable');
+
+        window.print();
+    }
+
     function actualizarDashboard() {
         const activas = ordenes.filter(o => o.status === 'ELABORADA').length;
         const hoyStr = new Date().toLocaleDateString('es-MX');
-        const hoyOrdenes = ordenes.filter(o => o.fecha === hoyStr);
+        const hoyOrdenes = ordenes.filter(o => o.fecha === hoyStr && o.status !== 'CANCELADA');
         
         const ingresosHoy = hoyOrdenes.reduce((acc, o) => acc + (o.precio + (o.precio * (o.ivaTasa / 100))), 0);
         const totalGastos = gastos.reduce((acc, g) => acc + g.monto, 0);
@@ -694,13 +776,21 @@
         document.getElementById('dash-gastos').innerText = `$${totalGastos.toFixed(2)}`;
     }
 
-    // INICIALIZACION
+    // INICIALIZACIÓN DE FECHA HOY PARA EL CORTE
+    const hoyObj = new Date();
+    const aAAA = hoyObj.getFullYear();
+    const mm = String(hoyObj.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoyObj.getDate()).padStart(2, '0');
+    document.getElementById('corte-fecha-input').value = `${aAAA}-${mm}-${dd}`;
+
     document.getElementById('or-id').value = nuevoID();
     document.getElementById('tarifa-general').value = tarifas.general;
     document.getElementById('tarifa-engrase').value = tarifas.engrase;
     document.getElementById('tarifa-chasis').value = tarifas.chasis;
     document.getElementById('tarifa-estetica').value = tarifas.estetica;
 
+    document.getElementById('cfg-nombre-negocio').value = config.nombreNegocio || '';
+    document.getElementById('cfg-leyenda').value = config.leyenda || '';
     document.getElementById('cfg-terminal').value = config.terminal;
     document.getElementById('cfg-estado').value = config.estado;
     document.getElementById('cfg-usuario').value = config.usuario;
