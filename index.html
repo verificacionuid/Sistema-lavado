@@ -91,7 +91,7 @@
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
 
-        /* VISTA PRINCIPAL (PORTADA CON BANNER) */
+        /* VISTA PRINCIPAL */
         .home-banner-container {
             text-align: center;
         }
@@ -198,7 +198,6 @@
     <!-- BARRA SUPERIOR CON LOGO Y NAVEGACION ERP -->
     <header>
         <div class="logo-container">
-            <!-- ARCHIVO DE LOGO EN TU REPOSITORIO -->
             <img src="logo.png" alt="Logo Auto Lavado" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <h3 style="display:none; color: #d97706;">AUTO LAVADO</h3>
         </div>
@@ -220,8 +219,7 @@
         <!-- PESTAÑA: INICIO -->
         <div id="tab-inicio" class="tab-pane active">
             <div class="home-banner-container">
-                <!-- ARCHIVO DE IMAGEN PRINCIPAL EN TU REPOSITORIO -->
-                <img src="banner.jpg" class="home-banner" alt="Flota Auto Lavado" onerror="this.src='https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1200&q=80'">
+                <img src="banner.jpg" class="home-banner" alt="Auto Lavado" onerror="this.src='https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1200&q=80'">
             </div>
 
             <div class="dashboard-cards">
@@ -255,11 +253,11 @@
                     </div>
                     <div class="form-group">
                         <label>Equipo / Vehículo</label>
-                        <input type="text" id="or-equipo" placeholder="Ej: LARMEX 30117 / Tractor" required>
+                        <input type="text" id="or-equipo" placeholder="Vehículo / Placas" required>
                     </div>
                     <div class="form-group">
-                        <label>U. Operativa / Cliente</label>
-                        <input type="text" id="or-uoperativa" placeholder="Ej: FULLES PFH / Cliente" required>
+                        <label>Cliente</label>
+                        <input type="text" id="or-cliente" placeholder="Nombre del cliente" required>
                     </div>
                     <div class="form-group">
                         <label>Servicio de Lavado</label>
@@ -280,7 +278,7 @@
                     </div>
                     <div class="form-group">
                         <label>Usuario / Encargado</label>
-                        <input type="text" id="or-usuario" placeholder="Ej: LROMERO-HMO" required>
+                        <input type="text" id="or-usuario" placeholder="Nombre de quien atiende" required>
                     </div>
                 </div>
 
@@ -298,7 +296,7 @@
                     <tr>
                         <th>IdOR</th>
                         <th>Equipo</th>
-                        <th>U. Operativa</th>
+                        <th>Cliente</th>
                         <th>Servicio</th>
                         <th>Status</th>
                         <th>Fecha</th>
@@ -317,7 +315,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Concepto del Gasto</label>
-                        <input type="text" id="gasto-concepto" placeholder="Ej: Compra de Shampú y Desengrasante" required>
+                        <input type="text" id="gasto-concepto" placeholder="Concepto" required>
                     </div>
                     <div class="form-group">
                         <label>Categoría</label>
@@ -376,18 +374,35 @@
             <button type="button" class="btn-action btn-success" onclick="guardarTarifas()">Guardar Tarifas Base</button>
         </div>
 
-        <!-- PESTAÑAS SECUNDARIAS (EXTENSIBLES) -->
+        <!-- PESTAÑAS SECUNDARIAS -->
         <div id="tab-catalogos" class="tab-pane">
             <h3>Catálogo de Clientes y Equipos</h3>
-            <p style="font-size: 12px; margin-top: 10px;">Módulo para alta de flotas, tipos de tractores y clientes recurrentes.</p>
+            <p style="font-size: 12px; margin-top: 10px;">Módulo para alta de vehículos y clientes recurrentes.</p>
         </div>
         <div id="tab-reportes" class="tab-pane">
-            <h3>Reportes de Operación y Liquidaciones</h3>
+            <h3>Reportes de Operación</h3>
             <p style="font-size: 12px; margin-top: 10px;">Resumen semanal de lavado de unidades, acumulados de IVA e ingresos.</p>
         </div>
+
+        <!-- PESTAÑA: CONFIGURACIÓN -->
         <div id="tab-configuracion" class="tab-pane">
-            <h3>Configuración del Sistema</h3>
-            <p style="font-size: 12px; margin-top: 10px;">Ajustes de terminal, datos fiscales de la empresa y permisos de usuario.</p>
+            <h3 style="margin-bottom: 10px;">Configuración del Sistema</h3>
+            <p style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Ajusta la información de la terminal que se muestra en la barra inferior.</p>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Ubicación / Terminal</label>
+                    <input type="text" id="cfg-terminal" placeholder="Ej: SUCURSAL MATRIZ">
+                </div>
+                <div class="form-group">
+                    <label>Estado del Sistema</label>
+                    <input type="text" id="cfg-estado" placeholder="Ej: CONECTADO">
+                </div>
+                <div class="form-group">
+                    <label>Usuario Predeterminado</label>
+                    <input type="text" id="cfg-usuario" placeholder="Ej: OPERADOR">
+                </div>
+            </div>
+            <button type="button" class="btn-action btn-success" onclick="guardarConfiguracion()">Guardar Configuración</button>
         </div>
 
     </div>
@@ -395,11 +410,10 @@
     <!-- PIE DE PAGINA ERP -->
     <footer>
         <div class="status-bar" id="barra-estado">
-            Terminal: HERMOSILLO SON. | Estado: CONECTADO | Usuario: SISTEMAS
+            Terminal: SUCURSAL CENTRO | Estado: CONECTADO | Usuario: OPERADOR
         </div>
         <div class="footer-links">
             <a href="#" onclick="alert('Sistema de Auto Lavado v2.0 - GitHub Ready')">Acerca de..</a> | 
-            <a href="#">Tickets Helpdesk</a> | 
             <a href="#" onclick="location.reload()">Salir</a>
         </div>
         <div class="copyright">
@@ -412,7 +426,6 @@
 <div id="print-ticket">
     <div class="ticket-header">
         <div>
-            <!-- LOGO QUE APARECERA EN EL TICKET IMPRESO -->
             <img src="logo-print.png" alt="Logo Impresión" style="max-height: 55px;" onerror="this.style.display='none'">
             <h2 style="margin-top: 5px;">AUTO LAVADO PROFESIONAL</h2>
             <p style="font-size: 12px;">Comprobante de Servicio y Orden de Trabajo</p>
@@ -426,8 +439,8 @@
 
     <table style="margin-top: 15px; margin-bottom: 15px;">
         <tr>
-            <td><strong>Equipo / Unidad:</strong> <span id="p-equipo"></span></td>
-            <td><strong>U. Operativa / Cliente:</strong> <span id="p-uoperativa"></span></td>
+            <td><strong>Equipo / Vehículo:</strong> <span id="p-equipo"></span></td>
+            <td><strong>Cliente:</strong> <span id="p-cliente"></span></td>
         </tr>
         <tr>
             <td><strong>Atendido por:</strong> <span id="p-usuario"></span></td>
@@ -490,13 +503,18 @@
         chasis: 650.00,
         estetica: 800.00
     };
+    let config = JSON.parse(localStorage.getItem('al_config_db')) || {
+        terminal: 'SUCURSAL CENTRO',
+        estado: 'CONECTADO',
+        usuario: 'OPERADOR'
+    };
 
     // GENERAR ID AUTOMATICO
     function nuevoID() {
         return Math.floor(900000 + Math.random() * 90000);
     }
 
-    // CAMBIO DE PESTAÑAS (NAVEGACION ERP)
+    // NAVEGACION ERP
     function openTab(tabId, element) {
         document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.erp-btn').forEach(btn => btn.classList.remove('active'));
@@ -526,6 +544,21 @@
         alert('Tarifas actualizadas correctamente.');
     }
 
+    // CONFIGURACION TERMINAL
+    function guardarConfiguracion() {
+        config.terminal = document.getElementById('cfg-terminal').value.toUpperCase();
+        config.estado = document.getElementById('cfg-estado').value.toUpperCase();
+        config.usuario = document.getElementById('cfg-usuario').value.toUpperCase();
+
+        localStorage.setItem('al_config_db', JSON.stringify(config));
+        actualizarBarraEstado();
+        alert('Configuración guardada correctamente.');
+    }
+
+    function actualizarBarraEstado() {
+        document.getElementById('barra-estado').innerText = `Terminal: ${config.terminal} | Estado: ${config.estado} | Usuario: ${config.usuario}`;
+    }
+
     // GUARDAR ORDEN DE TRABAJO
     function guardarOrden(e) {
         e.preventDefault();
@@ -534,7 +567,7 @@
         const nuevaOrden = {
             idOR: document.getElementById('or-id').value,
             equipo: document.getElementById('or-equipo').value.toUpperCase(),
-            uOperativa: document.getElementById('or-uoperativa').value.toUpperCase(),
+            cliente: document.getElementById('or-cliente').value.toUpperCase(),
             servicio: document.getElementById('or-servicio').value,
             precio: parseFloat(document.getElementById('or-precio').value),
             ivaTasa: parseFloat(document.getElementById('or-iva').value),
@@ -564,7 +597,7 @@
                 <tr>
                     <td><strong>${o.idOR}</strong></td>
                     <td>${o.equipo}</td>
-                    <td>${o.uOperativa}</td>
+                    <td>${o.cliente}</td>
                     <td>${o.servicio}</td>
                     <td><span style="color: ${o.status === 'FINALIZADA' ? 'green' : 'orange'}; font-weight: bold;">${o.status}</span></td>
                     <td>${o.fecha}</td>
@@ -585,7 +618,7 @@
         actualizarDashboard();
     }
 
-    // PREPARAR IMPRESION Y CALCULAR SUB-TOTAL / IVA
+    // PREPARAR IMPRESION DE TICKET
     function imprimirOrden(index) {
         const o = ordenes[index];
         const subtotal = o.precio;
@@ -596,7 +629,7 @@
         document.getElementById('p-fecha').innerText = `Fecha: ${o.fecha}`;
         document.getElementById('p-status').innerText = `Status: ${o.status}`;
         document.getElementById('p-equipo').innerText = o.equipo;
-        document.getElementById('p-uoperativa').innerText = o.uOperativa;
+        document.getElementById('p-cliente').innerText = o.cliente;
         document.getElementById('p-usuario').innerText = o.usuario;
         document.getElementById('p-servicio').innerText = o.servicio;
         document.getElementById('p-comentarios').innerText = o.comentarios || 'Sin observaciones de entrada.';
@@ -668,6 +701,11 @@
     document.getElementById('tarifa-chasis').value = tarifas.chasis;
     document.getElementById('tarifa-estetica').value = tarifas.estetica;
 
+    document.getElementById('cfg-terminal').value = config.terminal;
+    document.getElementById('cfg-estado').value = config.estado;
+    document.getElementById('cfg-usuario').value = config.usuario;
+
+    actualizarBarraEstado();
     renderOrdenes();
     renderGastos();
     actualizarDashboard();
